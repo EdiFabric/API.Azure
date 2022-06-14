@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using EdiFabric.Api;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
@@ -40,7 +38,7 @@ namespace EdiFabric.Api.Azure.Functions
             {
                 var res = req.CreateResponse(HttpStatusCode.OK);
                 res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-                await _ediService.ReadAsync(req.Body, res.Body, apiKeys.FirstOrDefault(), req.GetReadParams());
+                await _ediService.ReadAsync(req.Body, res.Body, apiKeys.First(), req.GetReadParams());
                 return res;
             }
             catch (Exception ex)
@@ -69,7 +67,7 @@ namespace EdiFabric.Api.Azure.Functions
                 var res = req.CreateResponse(HttpStatusCode.OK);
                 var writeParams = req.GetWriteParams();
                 res.Headers.Add("Content-Type", writeParams.ContentType);
-                await _ediService.WriteAsync(req.Body, res.Body, apiKeys.FirstOrDefault(), writeParams);
+                await _ediService.WriteAsync(req.Body, res.Body, apiKeys.First(), writeParams);
                 return res;
             }
             catch (Exception ex)
@@ -97,7 +95,7 @@ namespace EdiFabric.Api.Azure.Functions
             {
                 var res = req.CreateResponse(HttpStatusCode.OK);
                 res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-                await _ediService.ValidateAsync(req.Body, res.Body, apiKeys.FirstOrDefault(), req.GetValidateParams());
+                await _ediService.ValidateAsync(req.Body, res.Body, apiKeys.First(), req.GetValidateParams());
                 return res;
             }
             catch (Exception ex)
@@ -125,7 +123,7 @@ namespace EdiFabric.Api.Azure.Functions
             {
                 var res = req.CreateResponse(HttpStatusCode.OK);
                 res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-                await _ediService.GenerateAckAsync(req.Body, res.Body, apiKeys.FirstOrDefault(), req.GetAckParams());
+                await _ediService.GenerateAckAsync(req.Body, res.Body, apiKeys.First(), req.GetAckParams());
                 return res;
             }
             catch (Exception ex)

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using EdiFabric.Api;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 

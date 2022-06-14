@@ -1,5 +1,4 @@
-﻿using EdiFabric.Api;
-using Microsoft.AspNetCore.WebUtilities;
+﻿using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Collections.Generic;
 

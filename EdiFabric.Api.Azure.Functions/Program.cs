@@ -1,4 +1,3 @@
-using EdiFabric.Api;
 using Microsoft.Extensions.Hosting;
 
 namespace EdiFabric.Api.Azure.Functions
@@ -10,7 +9,7 @@ namespace EdiFabric.Api.Azure.Functions
             var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults()
                 .ConfigureServices(s => {
-                    s.AddEdiNation();
+                    s.AddEdiFabricApi();
                 })
                 .Build();
 
