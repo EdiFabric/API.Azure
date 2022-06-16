@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace EdiFabric.Api.Azure.Functions
+namespace EdiFabric.Api.Azure
 {
     public class X12Functions
     {

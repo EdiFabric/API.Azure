@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Hosting;
 
-namespace EdiFabric.Api.Azure.Functions
+namespace EdiFabric.Api.Azure
 {
     public class Program
     {

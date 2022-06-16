@@ -2,7 +2,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Collections.Generic;
 
-namespace EdiFabric.Api.Azure.Functions
+namespace EdiFabric.Api.Azure
 {
     public static class Extensions
     {

@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace EdiFabric.Api.Azure.Functions
+namespace EdiFabric.Api.Azure
 {
     public class EdifactFunctions
     {

@@ -2,33 +2,33 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace EdiFabric.Api.Azure.Functions
+namespace EdiFabric.Api.Azure
 {
-    public class NcpdpFunctions
+    public class Hl7Functions
     {
         EdiFunctions _ediFunctions;
 
-        public NcpdpFunctions(INcpdpService ncpdpService)
+        public Hl7Functions(IHl7Service hl7Service)
         {
-            _ediFunctions = new EdiFunctions(ncpdpService);
+            _ediFunctions = new EdiFunctions(hl7Service);
         }
 
-        [Function("ncpdp/read")]
+        [Function("hl7/read")]
         public async Task<HttpResponseData> Read([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
         {
-            return await _ediFunctions.Read(req, executionContext.GetLogger<INcpdpService>());
+            return await _ediFunctions.Read(req, executionContext.GetLogger<IHl7Service>());
         }
 
-        [Function("ncpdp/write")]
+        [Function("hl7/write")]
         public async Task<HttpResponseData> Write([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
         {
-            return await _ediFunctions.Write(req, executionContext.GetLogger<INcpdpService>());
+            return await _ediFunctions.Write(req, executionContext.GetLogger<IHl7Service>());
         }
 
-        [Function("ncpdp/validate")]
+        [Function("hl7/validate")]
         public async Task<HttpResponseData> Validate([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
         {
-            return await _ediFunctions.Validate(req, executionContext.GetLogger<INcpdpService>());
+            return await _ediFunctions.Validate(req, executionContext.GetLogger<IHl7Service>());
         }
     }
 }
