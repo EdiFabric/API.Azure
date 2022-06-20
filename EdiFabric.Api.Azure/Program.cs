@@ -3,7 +3,8 @@ using Microsoft.Extensions.Hosting;
 
 var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults()
-                .ConfigureServices(s => {
+                .ConfigureServices(s =>
+                {
                     s.AddEdiFabricApi();
                 })
                 .Build();
