@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32510.428
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdiFabric.Api.Azure", "EdiFabric.Api.Azure\EdiFabric.Api.Azure.csproj", "{35100B35-B490-40C9-8591-6A418BC6FA48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdiFabric.Api.Azure", "EdiFabric.Api.Azure\EdiFabric.Api.Azure.csproj", "{58B66C53-B42F-4048-B551-47235CEC08B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{35100B35-B490-40C9-8591-6A418BC6FA48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35100B35-B490-40C9-8591-6A418BC6FA48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35100B35-B490-40C9-8591-6A418BC6FA48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35100B35-B490-40C9-8591-6A418BC6FA48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B66C53-B42F-4048-B551-47235CEC08B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B66C53-B42F-4048-B551-47235CEC08B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B66C53-B42F-4048-B551-47235CEC08B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B66C53-B42F-4048-B551-47235CEC08B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

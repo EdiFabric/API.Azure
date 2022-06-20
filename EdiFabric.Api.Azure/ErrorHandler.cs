@@ -1,35 +1,29 @@
 ﻿using Microsoft.Azure.Functions.Worker.Http;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 
-namespace EdiFabric.Api.Azure
+static class ErrorHandler
 {
-    static class ErrorHandler
+    public static async Task<HttpResponseData> BuildErrorResponse(this HttpRequestData req, HttpStatusCode statusCode, string message)
     {
-        public static async Task<HttpResponseData> BuildErrorResponse(this HttpRequestData req, HttpStatusCode statusCode, string message)
+        var response = req.CreateResponse();
+        await response.WriteAsJsonAsync(new
         {
-            var response = req.CreateResponse();
-            await response.WriteAsJsonAsync(new 
-            {
-                Code = (int)statusCode,
-                Details = new List<string> { message }
-            }, statusCode);
-            return response;
-        }
+            Code = (int)statusCode,
+            Details = new List<string> { message }
+        }, statusCode);
+        return response;
+    }
 
-        public static async Task<HttpResponseData> BuildErrorResponse(this HttpRequestData req, Exception ex)
-        {            
-            var statusCode = ex is InvalidDataException ? HttpStatusCode.BadRequest : HttpStatusCode.InternalServerError;           
-            var response = req.CreateResponse();
-            await response.WriteAsJsonAsync(new
-            {
-                Code = (int)statusCode,
-                Details = new List<string> { ex.Message }
-            }, statusCode);
-            return response;
-        }
+    public static async Task<HttpResponseData> BuildErrorResponse(this HttpRequestData req, Exception ex)
+    {
+        var statusCode = ex is InvalidDataException ? HttpStatusCode.BadRequest : HttpStatusCode.InternalServerError;
+        var response = req.CreateResponse();
+        await response.WriteAsJsonAsync(new
+        {
+            Code = (int)statusCode,
+            Details = new List<string> { ex.Message }
+        }, statusCode);
+        return response;
     }
 }
+
