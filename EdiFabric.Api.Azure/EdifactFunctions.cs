@@ -7,7 +7,7 @@ public class EdifactFunctions
 {
     EdiFunctions _ediFunctions;
 
-    public EdifactFunctions(IEdifactService edifactService, IConfiguration configuration)
+    public EdifactFunctions(IEdifactService edifactService)
     {
         _ediFunctions = new EdiFunctions(edifactService);
     }

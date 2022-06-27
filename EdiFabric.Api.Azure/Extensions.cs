@@ -2,7 +2,7 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using EdiFabric.Api;
 
-public static class Extensions
+internal static class Extensions
 {
     public static ReadParams GetReadParams(this HttpRequestData req)
     {
