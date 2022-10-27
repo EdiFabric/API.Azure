@@ -28,4 +28,10 @@ public class NcpdpFunctions
     {
         return await _ediFunctions.Validate(req, executionContext.GetLogger<INcpdpService>());
     }
+
+    [Function("ncpdp/analyze")]
+    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    {
+        return await _ediFunctions.Analyze(req, executionContext.GetLogger<INcpdpService>());
+    }
 }

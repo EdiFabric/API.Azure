@@ -34,4 +34,10 @@ public class X12Functions
     {
         return await _ediFunctions.Ack(req, executionContext.GetLogger<IX12Service>());
     }
+
+    [Function("x12/analyze")]
+    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    {
+        return await _ediFunctions.Analyze(req, executionContext.GetLogger<IX12Service>());
+    }
 }

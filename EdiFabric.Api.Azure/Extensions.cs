@@ -215,4 +215,58 @@ internal static class Extensions
 
         return result;
     }
+
+    public static AnalyzeParams GetAnalyzeParams(this HttpRequestData req)
+    {
+        var result = new AnalyzeParams();
+
+        if (req.Url != null && !string.IsNullOrEmpty(req.Url.Query))
+        {
+            var queryDictionary = QueryHelpers.ParseQuery(req.Url.Query);
+
+            var model = queryDictionary.GetValueOrDefault("model").ToString();
+            if (!string.IsNullOrEmpty(model))
+            {
+                result.Model = model;
+            }
+
+            var syntaxSet = queryDictionary.GetValueOrDefault("syntaxSet").ToString();
+            if (!string.IsNullOrEmpty(syntaxSet))
+            {
+                result.SyntaxSet = syntaxSet;
+            }
+
+            var es3 = queryDictionary.GetValueOrDefault("eancomS3").ToString();
+            if (!string.IsNullOrEmpty(es3) && bool.TryParse(es3, out bool eancomS3))
+            {
+                result.EancomS3IsDefault = eancomS3;
+            }
+
+            var bs = queryDictionary.GetValueOrDefault("basicSyntax").ToString();
+            if (!string.IsNullOrEmpty(bs) && bool.TryParse(bs, out bool basicSyntax))
+            {
+                result.BasicSyntax = basicSyntax;
+            }
+
+            var ack = queryDictionary.GetValueOrDefault("ack").ToString();
+            if (!string.IsNullOrEmpty(ack))
+            {
+                result.AckVersion = ack;
+            }
+
+            var charSet = queryDictionary.GetValueOrDefault("charSet").ToString();
+            if (!string.IsNullOrEmpty(charSet))
+            {
+                result.CharSet = charSet;
+            }
+
+            var ss = queryDictionary.GetValueOrDefault("skipSeq").ToString();
+            if (!string.IsNullOrEmpty(ss) && bool.TryParse(ss, out bool skipSeq))
+            {
+                result.SkipSeqCountValidation = skipSeq;
+            }
+        }
+
+        return result;
+    }
 }

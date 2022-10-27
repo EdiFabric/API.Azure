@@ -28,4 +28,10 @@ public class VdaFunctions
     {
         return await _ediFunctions.Validate(req, executionContext.GetLogger<IVdaService>());
     }
+
+    [Function("vda/analyze")]
+    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    {
+        return await _ediFunctions.Analyze(req, executionContext.GetLogger<IVdaService>());
+    }
 }

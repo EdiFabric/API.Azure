@@ -127,4 +127,32 @@ public class EdiFunctions
             return await req.BuildErrorResponse(ex);
         }
     }
+
+    public async Task<HttpResponseData> Analyze(HttpRequestData req, ILogger logger)
+    {
+        if (req.Body == null || req.Body.Length == 0)
+        {
+            logger.LogError(_noData);
+            return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noData);
+        }
+
+        if (!req.Headers.TryGetValues(_apiKey, out var apiKeys) || apiKeys.FirstOrDefault() == null)
+        {
+            logger.LogError(_noApiKey);
+            return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noApiKey);
+        }
+
+        try
+        {
+            var res = req.CreateResponse(HttpStatusCode.OK);
+            res.Headers.Add("Content-Type", "application/json; charset=utf-8");
+            await _ediService.AnalyzeAsync(req.Body, res.Body, apiKeys.First(), req.GetAnalyzeParams());
+            return res;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            return await req.BuildErrorResponse(ex);
+        }
+    }
 }

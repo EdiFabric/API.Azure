@@ -28,4 +28,10 @@ public class Hl7Functions
     {
         return await _ediFunctions.Validate(req, executionContext.GetLogger<IHl7Service>());
     }
+
+    [Function("hl7/analyze")]
+    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    {
+        return await _ediFunctions.Analyze(req, executionContext.GetLogger<IHl7Service>());
+    }
 }

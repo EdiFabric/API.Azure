@@ -35,4 +35,10 @@ public class EdifactFunctions
     {
         return await _ediFunctions.Ack(req, executionContext.GetLogger<IEdifactService>());
     }
+
+    [Function("edifact/analyze")]
+    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    {
+        return await _ediFunctions.Analyze(req, executionContext.GetLogger<IEdifactService>());
+    }
 }
