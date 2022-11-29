@@ -2,6 +2,7 @@
 
 ## 1. Overview
 EdiNation InHouse EDI API allows you to run EdiNation's EDI translation and validation API in your own cloud or on-prem environment(s).  
+This tutorial uses the example Azure Function that comes with the EdiNation Inhouse product, to demonstrate how to publish EdiNation Inhouse API as an Azure Function in your own Azure subscription(s).
 
 > NOTE: The example is for .NET [isolated process function](https://docs.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide).
 
@@ -21,7 +22,7 @@ EdiNation InHouse EDI API allows you to run EdiNation's EDI translation and vali
 Rebuild the solution. If there are any build errors, contact us at https://support.edifabric.com/hc/en-us/requests/new for assistance.
 
 ## 5. Getting started
-To get started, follow the steps in the [How to use InHouse EDI API as Azure function](https://support.edifabric.com/hc/en-us/articles/7726202434449-How-to-use-Inhouse-EDI-API-as-Azure-Function) article.  
+To get started, follow the steps in the [How to use InHouse EDI API as Azure Function](https://support.edifabric.com/hc/en-us/articles/7726202434449-How-to-use-Inhouse-EDI-API-as-Azure-Function) article.  
 
 ## 6. Warranty
 *The source code in these example projects is strictly for demonstrational purposes and is provided "AS IS" without warranty of any kind, whether expressed or implied, including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.*
