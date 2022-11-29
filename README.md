@@ -15,6 +15,8 @@ EdiNation InHouse EDI API allows you to run EdiNation's EDI translation and vali
 ## 3. EdiNation Inhouse account and installation files
 [Sign up for EdiNation Inhouse](https://buy.stripe.com/eVabJS2OT2GZ3vy002) with a professional email address to receive the in-house EDI API installation files EdiFabric.dll and EdiFabric.Api.dll.
 
+> NOTE: You won't be able to use this edition of EdiFabric on its own or as a substitute for a product you previously obtained from edifabric.com.
+
 ## 4. Setup
 Rebuild the solution. If there are any build errors, contact us at https://support.edifabric.com/hc/en-us/requests/new for assistance.
 
