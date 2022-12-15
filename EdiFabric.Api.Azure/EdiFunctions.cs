@@ -127,7 +127,9 @@ public class EdiFunctions
             return await req.BuildErrorResponse(ex);
         }
     }
-
+    /// <summary>
+    /// This is a system operation used only for the in-house web translator.
+    /// </summary>
     public async Task<HttpResponseData> Analyze(HttpRequestData req, ILogger logger)
     {
         if (req.Body == null || req.Body.Length == 0)

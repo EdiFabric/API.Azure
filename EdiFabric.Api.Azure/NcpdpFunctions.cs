@@ -28,7 +28,9 @@ public class NcpdpFunctions
     {
         return await _ediFunctions.Validate(req, executionContext.GetLogger<INcpdpService>());
     }
-
+    /// <summary>
+    /// This is a system operation used only for the in-house web translator.
+    /// </summary>
     [Function("ncpdp/analyze")]
     public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
     {

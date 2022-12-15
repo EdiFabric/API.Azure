@@ -28,7 +28,9 @@ public class VdaFunctions
     {
         return await _ediFunctions.Validate(req, executionContext.GetLogger<IVdaService>());
     }
-
+    /// <summary>
+    /// This is a system operation used only for the in-house web translator.
+    /// </summary>
     [Function("vda/analyze")]
     public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
     {

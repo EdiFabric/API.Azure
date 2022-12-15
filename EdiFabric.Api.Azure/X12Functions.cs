@@ -34,7 +34,9 @@ public class X12Functions
     {
         return await _ediFunctions.Ack(req, executionContext.GetLogger<IX12Service>());
     }
-
+    /// <summary>
+    /// This is a system operation used only for the in-house web translator.
+    /// </summary>
     [Function("x12/analyze")]
     public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
     {

@@ -35,7 +35,9 @@ public class EdifactFunctions
     {
         return await _ediFunctions.Ack(req, executionContext.GetLogger<IEdifactService>());
     }
-
+    /// <summary>
+    /// This is a system operation used only for the in-house web translator.
+    /// </summary>
     [Function("edifact/analyze")]
     public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
     {
