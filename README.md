@@ -14,7 +14,7 @@ This tutorial uses the example Azure Function that comes with the EdiNation Inho
 - EDI test file(s) - the API supports X12, EDIFACT, EANCOM, HL7, NCPDP, VDA, and EDIGAS. If you don't have a test file, use one of ours - [X12 HIPAA](https://support.edifabric.com/hc/en-us/sections/360001487352-X12-HIPAA-Files-Templates), [X12](https://support.edifabric.com/hc/en-us/sections/360005274077-X12-Files-Templates), [EDIFACT](https://support.edifabric.com/hc/en-us/sections/360005274137-EDIFACT-Files-Templates).
 
 ## 3. EdiNation Inhouse account and installation files
-[Sign up for EdiNation Inhouse](https://buy.stripe.com/eVabJS2OT2GZ3vy002) with a professional email address to receive the in-house EDI API installation files EdiFabric.dll and EdiFabric.Api.dll.
+[Sign up for EdiNation Inhouse](https://buy.stripe.com/bIY9BK615epH2rufZ4) with a professional email address to receive the in-house EDI API installation files EdiFabric.dll and EdiFabric.Api.dll.
 
 > NOTE: You won't be able to use this edition of EdiFabric on its own or as a substitute for a product you previously obtained from edifabric.com.
 
