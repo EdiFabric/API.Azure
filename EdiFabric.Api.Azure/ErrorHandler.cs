@@ -21,7 +21,7 @@ static class ErrorHandler
         await response.WriteAsJsonAsync(new
         {
             Code = (int)statusCode,
-            Details = new List<string> { ex.ToString() }
+            Details = new List<string> { ex.Message }
         }, statusCode);
         return response;
     }
