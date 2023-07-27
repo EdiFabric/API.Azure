@@ -8,7 +8,8 @@ var host = new HostBuilder()
                 .ConfigureServices(s =>
                 {
                     s.AddEdiFabricApi();
-                    s.AddHostedService<LocalModelsService>();
+                    //  Uncomment if you wish to use distributed cache for models
+                    //  s.AddHostedService<LocalModelsService>();
                 })
                 
                 .Build();
