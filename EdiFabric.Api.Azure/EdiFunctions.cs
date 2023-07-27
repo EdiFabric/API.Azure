@@ -2,12 +2,12 @@ using System.Net;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using EdiFabric.Api;
+using EdiFabric.Api.Azure;
+using EdiFabric;
 
 public class EdiFunctions
 {
     IEdiService _ediService;
-    private readonly string _apiKey = "Ocp-Apim-Subscription-Key";
-    private readonly string _noApiKey = "No Ocp-Apim-Subscription-Key in header.";
     private readonly string _noData = "No data in request body.";
 
     public EdiFunctions(IEdiService ediService)
@@ -23,22 +23,19 @@ public class EdiFunctions
             return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noData);
         }
 
-        if (!req.Headers.TryGetValues(_apiKey, out var apiKeys) || apiKeys.FirstOrDefault() == null)
-        {
-            logger.LogError(_noApiKey);
-            return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noApiKey);
-        }
-
         try
         {
+            SerialKey.Set(Configuration.ApiKey);
+            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            //  BlobCache.Set();
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await _ediService.ReadAsync(req.Body, res.Body, apiKeys.First(), req.GetReadParams());
+            await _ediService.ReadAsync(req.Body, res.Body, Configuration.ApiKey, req.GetReadParams());
             return res;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.ToString());
             return await req.BuildErrorResponse(ex);
         }
     }
@@ -51,23 +48,20 @@ public class EdiFunctions
             return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noData);
         }
 
-        if (!req.Headers.TryGetValues(_apiKey, out var apiKeys) || apiKeys.FirstOrDefault() == null)
-        {
-            logger.LogError(_noApiKey);
-            return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noApiKey);
-        }
-
         try
         {
+            SerialKey.Set(Configuration.ApiKey);
+            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            //  BlobCache.Set();
             var res = req.CreateResponse(HttpStatusCode.OK);
             var writeParams = req.GetWriteParams();
             res.Headers.Add("Content-Type", writeParams.ContentType);
-            await _ediService.WriteAsync(req.Body, res.Body, apiKeys.First(), writeParams);
+            await _ediService.WriteAsync(req.Body, res.Body, Configuration.ApiKey, writeParams);
             return res;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.ToString());
             return await req.BuildErrorResponse(ex);
         }
     }
@@ -80,22 +74,19 @@ public class EdiFunctions
             return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noData);
         }
 
-        if (!req.Headers.TryGetValues(_apiKey, out var apiKeys) || apiKeys.FirstOrDefault() == null)
-        {
-            logger.LogError(_noApiKey);
-            return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noApiKey);
-        }
-
         try
         {
+            SerialKey.Set(Configuration.ApiKey);
+            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            //  BlobCache.Set();
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await _ediService.ValidateAsync(req.Body, res.Body, apiKeys.First(), req.GetValidateParams());
+            await _ediService.ValidateAsync(req.Body, res.Body, Configuration.ApiKey, req.GetValidateParams());
             return res;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.ToString());
             return await req.BuildErrorResponse(ex);
         }
     }
@@ -108,22 +99,19 @@ public class EdiFunctions
             return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noData);
         }
 
-        if (!req.Headers.TryGetValues(_apiKey, out var apiKeys) || apiKeys.FirstOrDefault() == null)
-        {
-            logger.LogError(_noApiKey);
-            return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noApiKey);
-        }
-
         try
         {
+            SerialKey.Set(Configuration.ApiKey);
+            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            //  BlobCache.Set();
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await _ediService.GenerateAckAsync(req.Body, res.Body, apiKeys.First(), req.GetAckParams());
+            await _ediService.GenerateAckAsync(req.Body, res.Body, Configuration.ApiKey, req.GetAckParams());
             return res;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.ToString());
             return await req.BuildErrorResponse(ex);
         }
     }
@@ -138,22 +126,19 @@ public class EdiFunctions
             return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noData);
         }
 
-        if (!req.Headers.TryGetValues(_apiKey, out var apiKeys) || apiKeys.FirstOrDefault() == null)
-        {
-            logger.LogError(_noApiKey);
-            return await req.BuildErrorResponse(HttpStatusCode.BadRequest, _noApiKey);
-        }
-
         try
         {
+            SerialKey.Set(Configuration.ApiKey);
+            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            //  BlobCache.Set();
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await _ediService.AnalyzeAsync(req.Body, res.Body, apiKeys.First(), req.GetAnalyzeParams());
+            await _ediService.AnalyzeAsync(req.Body, res.Body, Configuration.ApiKey, req.GetAnalyzeParams());
             return res;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.ToString());
             return await req.BuildErrorResponse(ex);
         }
     }
