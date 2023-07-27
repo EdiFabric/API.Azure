@@ -15,7 +15,14 @@ namespace EdiFabric.Api.Azure
         {
             //  Load local EDI models
             //  When models are local they won't be pulled from EdiNation API
-            await BlobCache.LoadModels(_modelService);
+            try
+            {
+                await BlobCache.LoadModels(_modelService);
+            }
+            catch(Exception ex) 
+            {
+                Console.WriteLine($"Can't load models from cache. {ex.Message}");
+            }
         }
         public Task StopAsync(CancellationToken cancellationToken)
         {
