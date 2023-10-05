@@ -30,7 +30,7 @@ public class EdiFunctions
             //  BlobCache.Set();
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await _ediService.ReadAsync(req.Body, res.Body, Configuration.ApiKey, req.GetReadParams());
+            await _ediService.ReadAsync(req.Body, res.Body, GetApiKey(req), req.GetReadParams());
             return res;
         }
         catch (Exception ex)
@@ -56,7 +56,7 @@ public class EdiFunctions
             var res = req.CreateResponse(HttpStatusCode.OK);
             var writeParams = req.GetWriteParams();
             res.Headers.Add("Content-Type", writeParams.ContentType);
-            await _ediService.WriteAsync(req.Body, res.Body, Configuration.ApiKey, writeParams);
+            await _ediService.WriteAsync(req.Body, res.Body, GetApiKey(req), writeParams);
             return res;
         }
         catch (Exception ex)
@@ -81,7 +81,7 @@ public class EdiFunctions
             //  BlobCache.Set();
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await _ediService.ValidateAsync(req.Body, res.Body, Configuration.ApiKey, req.GetValidateParams());
+            await _ediService.ValidateAsync(req.Body, res.Body, GetApiKey(req), req.GetValidateParams());
             return res;
         }
         catch (Exception ex)
@@ -106,7 +106,7 @@ public class EdiFunctions
             //  BlobCache.Set();
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await _ediService.GenerateAckAsync(req.Body, res.Body, Configuration.ApiKey, req.GetAckParams());
+            await _ediService.GenerateAckAsync(req.Body, res.Body, GetApiKey(req), req.GetAckParams());
             return res;
         }
         catch (Exception ex)
@@ -133,7 +133,7 @@ public class EdiFunctions
             //  BlobCache.Set();
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            await _ediService.AnalyzeAsync(req.Body, res.Body, Configuration.ApiKey, req.GetAnalyzeParams());
+            await _ediService.AnalyzeAsync(req.Body, res.Body, GetApiKey(req), req.GetAnalyzeParams());
             return res;
         }
         catch (Exception ex)
@@ -141,5 +141,13 @@ public class EdiFunctions
             logger.LogError(ex, ex.ToString());
             return await req.BuildErrorResponse(ex);
         }
+    }
+
+    private string GetApiKey(HttpRequestData req)
+    {
+        if (req.Headers.TryGetValues("Ocp-Apim-Subscription-Key", out var apiKeys) && apiKeys.FirstOrDefault() != null)
+            return apiKeys.First();
+
+        return Configuration.ApiKey;
     }
 }
