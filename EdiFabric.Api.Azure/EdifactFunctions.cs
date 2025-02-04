@@ -12,34 +12,34 @@ public class EdifactFunctions
         _ediFunctions = new EdiFunctions(edifactService);
     }
 
-    [Function("edifact/read")]
-    public async Task<HttpResponseData> Read([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("edifactread")]
+    public async Task<HttpResponseData> Read([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "edifact/read")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Read(req, executionContext.GetLogger<IEdifactService>());
     }
 
-    [Function("edifact/write")]
-    public async Task<HttpResponseData> Write([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("edifactwrite")]
+    public async Task<HttpResponseData> Write([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "edifact/write")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Write(req, executionContext.GetLogger<IEdifactService>());
     }
 
-    [Function("edifact/validate")]
-    public async Task<HttpResponseData> Validate([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("edifactvalidate")]
+    public async Task<HttpResponseData> Validate([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "edifact/validate")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Validate(req, executionContext.GetLogger<IEdifactService>());
     }
 
-    [Function("edifact/ack")]
-    public async Task<HttpResponseData> Ack([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("edifactack")]
+    public async Task<HttpResponseData> Ack([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "edifact/ack")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Ack(req, executionContext.GetLogger<IEdifactService>());
     }
     /// <summary>
     /// This is a system operation used only for the in-house web translator.
     /// </summary>
-    [Function("edifact/analyze")]
-    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("edifactanalyze")]
+    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "edifact/analyze")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Analyze(req, executionContext.GetLogger<IEdifactService>());
     }

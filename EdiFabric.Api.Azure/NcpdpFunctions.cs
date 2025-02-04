@@ -11,28 +11,28 @@ public class NcpdpFunctions
         _ediFunctions = new EdiFunctions(ncpdpService);
     }
 
-    [Function("ncpdp/read")]
-    public async Task<HttpResponseData> Read([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("ncpdpread")]
+    public async Task<HttpResponseData> Read([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ncpdp/read")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Read(req, executionContext.GetLogger<INcpdpService>());
     }
 
-    [Function("ncpdp/write")]
-    public async Task<HttpResponseData> Write([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("ncpdpwrite")]
+    public async Task<HttpResponseData> Write([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ncpdp/write")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Write(req, executionContext.GetLogger<INcpdpService>());
     }
 
-    [Function("ncpdp/validate")]
-    public async Task<HttpResponseData> Validate([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("ncpdpvalidate")]
+    public async Task<HttpResponseData> Validate([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ncpdp/validate")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Validate(req, executionContext.GetLogger<INcpdpService>());
     }
     /// <summary>
     /// This is a system operation used only for the in-house web translator.
     /// </summary>
-    [Function("ncpdp/analyze")]
-    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("ncpdpanalyze")]
+    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ncpdp/analyze")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Analyze(req, executionContext.GetLogger<INcpdpService>());
     }

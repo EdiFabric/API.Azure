@@ -11,28 +11,28 @@ public class VdaFunctions
         _ediFunctions = new EdiFunctions(vdaService);
     }
 
-    [Function("vda/read")]
-    public async Task<HttpResponseData> Read([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("vdaread")]
+    public async Task<HttpResponseData> Read([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "vda/read")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Read(req, executionContext.GetLogger<IVdaService>());
     }
 
-    [Function("vda/write")]
-    public async Task<HttpResponseData> Write([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("vdawrite")]
+    public async Task<HttpResponseData> Write([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "vda/write")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Write(req, executionContext.GetLogger<IVdaService>());
     }
 
-    [Function("vda/validate")]
-    public async Task<HttpResponseData> Validate([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("vdavalidate")]
+    public async Task<HttpResponseData> Validate([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "vda/validate")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Validate(req, executionContext.GetLogger<IVdaService>());
     }
     /// <summary>
     /// This is a system operation used only for the in-house web translator.
     /// </summary>
-    [Function("vda/analyze")]
-    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+    [Function("vdaanalyze")]
+    public async Task<HttpResponseData> Analyze([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "vda/analyze")] HttpRequestData req, FunctionContext executionContext)
     {
         return await _ediFunctions.Analyze(req, executionContext.GetLogger<IVdaService>());
     }
