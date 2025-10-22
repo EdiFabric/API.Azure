@@ -26,9 +26,9 @@ public class EdiFunctions
         try
         {
             var apiKey = GetApiKey(req);
-            SerialKey.Set(apiKey);
-            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
-            //  BlobCache.Set(apiKey);
+            // SerialKey.Set(apiKey);
+            // Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            BlobCache.Set(apiKey);
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
             await _ediService.ReadAsync(req.Body, res.Body, apiKey, req.GetReadParams());
@@ -52,9 +52,9 @@ public class EdiFunctions
         try
         {
             var apiKey = GetApiKey(req);
-            SerialKey.Set(apiKey);
-            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
-            //  BlobCache.Set(apiKey);
+            // SerialKey.Set(apiKey);
+            // Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            BlobCache.Set(apiKey);
             var res = req.CreateResponse(HttpStatusCode.OK);
             var writeParams = req.GetWriteParams();
             res.Headers.Add("Content-Type", writeParams.ContentType);
@@ -79,9 +79,9 @@ public class EdiFunctions
         try
         {
             var apiKey = GetApiKey(req);
-            SerialKey.Set(apiKey);
-            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
-            //  BlobCache.Set(apiKey);
+            // SerialKey.Set(apiKey);
+            // Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            BlobCache.Set(apiKey);
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
             await _ediService.ValidateAsync(req.Body, res.Body, apiKey, req.GetValidateParams());
@@ -105,9 +105,9 @@ public class EdiFunctions
         try
         {
             var apiKey = GetApiKey(req);
-            SerialKey.Set(apiKey);
-            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
-            //  BlobCache.Set(apiKey);
+            // SerialKey.Set(apiKey);
+            // Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            BlobCache.Set(apiKey);
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
             await _ediService.GenerateAckAsync(req.Body, res.Body, apiKey, req.GetAckParams());
@@ -133,9 +133,9 @@ public class EdiFunctions
         try
         {
             var apiKey = GetApiKey(req);
-            SerialKey.Set(apiKey);
-            //  Uncomment and then comment the line above if you wish to use distributed cache for tokens
-            //  BlobCache.Set(apiKey);
+            // SerialKey.Set(apiKey);
+            // Uncomment and then comment the line above if you wish to use distributed cache for tokens
+            BlobCache.Set(apiKey);
             var res = req.CreateResponse(HttpStatusCode.OK);
             res.Headers.Add("Content-Type", "application/json; charset=utf-8");
             await _ediService.AnalyzeAsync(req.Body, res.Body, apiKey, req.GetAnalyzeParams());
