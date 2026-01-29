@@ -8,7 +8,7 @@ This tutorial uses the example Azure Function that comes with the EdiNation Inho
 
 ## 2. Requirements
 - [EdiNation Inhouse subscription](https://buy.stripe.com/bIY9BK615epH2rufZ4) - this contains the in-house EDI API installation files EdiFabric.dll and EdiFabric.Api.dll, and an example Visual Studio 2022 solution that implements an Azure Function.
-- [Visual Studio 2022](https://visualstudio.microsoft.com/vs/), which supports .NET 8.0 (or .NET 6.0). 
+- [Visual Studio](https://visualstudio.microsoft.com/vs/), which supports .NET 8.0 (or .NET 6.0). 
 - If you don't have an [Azure subscription](https://docs.microsoft.com/en-us/azure/guides/developer/azure-developer-guide#understanding-accounts-subscriptions-and-billing), create an [Azure free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio) before you begin.
 - [Download Postman](https://www.postman.com/downloads/) - it's an application to consume/test your API.
 - EDI test file(s) - the API supports X12, EDIFACT, EANCOM, HL7, NCPDP, VDA, and EDIGAS. If you don't have a test file, use one of ours - [X12 HIPAA](https://support.edifabric.com/hc/en-us/sections/360001487352-X12-HIPAA-Files-Templates), [X12](https://support.edifabric.com/hc/en-us/sections/360005274077-X12-Files-Templates), [EDIFACT](https://support.edifabric.com/hc/en-us/sections/360005274137-EDIFACT-Files-Templates).
@@ -36,4 +36,4 @@ To get started, follow the steps in the [How to use InHouse EDI API as Azure Fun
 [How to use EDI API as ASP.NET Core](https://support.edifabric.com/hc/en-us/articles/9586899018013-How-to-use-EDI-API-as-ASP-NET-Core)
 
 [Support](https://support.edifabric.com/hc/en-us/requests/new)
-### 2025 © EdiFabric
+### 2026 © EdiFabric
