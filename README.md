@@ -3,7 +3,7 @@
 ## 1. Overview
 This example hosts [ediFabric Native](https://www.edifabric.com/edifabric-native.html) behind an Azure Functions HTTP API. It translates X12 EDI to JSON and back, validates transaction sets, and generates acknowledgments using the C# bindings from [edifabric-csharp-bindings](https://github.com/EdiFabric/edifabric-csharp-bindings).
 
-The native library is a self-contained shared library. No `EdiFabric.Api` NuGet package, .NET EDI runtime, or JVM is required on the target machine beyond this isolated-process Azure Functions host.
+The native library is a self-contained shared library. No EdiFabric.Api NuGet package (aka EdiNation InHouse) is required on the target machine beyond this isolated-process Azure Functions host.
 
 > NOTE: The example is for .NET [isolated process function](https://docs.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide).
 
