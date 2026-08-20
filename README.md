@@ -46,12 +46,12 @@ By default the API uses the online spec service (`SetMap` with `"default": "<ser
 ## 5. Getting started
 Run the function app locally, then POST X12 EDI to:
 
-| Endpoint | Native call |
-| --- | --- |
-| `POST /api/x12/read` | `EdiFabricX12.Parse` (JSON only) |
-| `POST /api/x12/write` | `EdiFabricX12.Build` |
-| `POST /api/x12/validate` | `EdiFabricX12.Parse` (JSON + validation report) |
-| `POST /api/x12/ack` | `EdiFabricX12.Parse` (JSON + validation + 999/997/TA1) |
+| Endpoint | Native call | Input | Output
+| --- | --- | --- | --- |
+| `POST /x12/read` | `EdiFabricX12.Parse` (JSON only) | X12 | JSON |
+| `POST /x12/write` | `EdiFabricX12.Build` | JSON (the output from /read) | X12 |
+| `POST /x12/validate` | `EdiFabricX12.Parse` (JSON + validation report) | JSON (the output from /read) or X12 | JSON |
+| `POST /x12/ack` | `EdiFabricX12.Parse` (JSON + validation + 999/997/TA1) | JSON (the output from /read) or X12 | JSON |
 
 ## 6. Warranty
 *The source code in these example projects is strictly for demonstrational purposes and is provided "AS IS" without warranty of any kind, whether expressed or implied, including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.*
