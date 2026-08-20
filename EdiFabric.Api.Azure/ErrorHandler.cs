@@ -1,5 +1,6 @@
-﻿using Microsoft.Azure.Functions.Worker.Http;
-using System.Net;
+﻿using System.Net;
+using EdiFabric.Native.X12;
+using Microsoft.Azure.Functions.Worker.Http;
 
 static class ErrorHandler
 {
@@ -16,14 +17,26 @@ static class ErrorHandler
 
     public static async Task<HttpResponseData> BuildErrorResponse(this HttpRequestData req, Exception ex)
     {
-        var statusCode = ex is InvalidDataException ? HttpStatusCode.BadRequest : HttpStatusCode.InternalServerError;
-        var response = req.CreateResponse(statusCode);
-        await response.WriteAsJsonAsync(new
+        return await req.BuildErrorResponse(StatusCodeFor(ex), ex.Message);
+    }
+
+    private static HttpStatusCode StatusCodeFor(Exception ex)
+    {
+        if (ex is InvalidDataException)
+            return HttpStatusCode.BadRequest;
+
+        if (ex is EdiFabricException ediEx)
         {
-            Code = (int)statusCode,
-            Details = new List<string> { ex.Message }
-        });
-        return response;
+            return ediEx.Code is
+                (int)EdiFabricErrorCode.IncorrectInput or
+                (int)EdiFabricErrorCode.MapNotSet or
+                (int)EdiFabricErrorCode.IncorrectMode or
+                (int)EdiFabricErrorCode.ConfigDeserialization or
+                (int)EdiFabricErrorCode.SplitSegmentIdMissing
+                ? HttpStatusCode.BadRequest
+                : HttpStatusCode.InternalServerError;
+        }
+
+        return HttpStatusCode.InternalServerError;
     }
 }
-

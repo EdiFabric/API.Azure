@@ -1,18 +1,19 @@
 ﻿using System.Text;
+using EdiFabric.Native.X12;
 
 namespace EdiFabric.Api.Azure
 {
     public class BlobCache
     {
-        public static void Set(string apiKey)
+        public static void Set(string serialKey)
         {
             try
             {
                 var token = ReadTokenFromCache().Result;
-                SerialKey.SetToken(token);
+                EdiFabricX12.SetToken(token);
 
                 //  Refresh token before expiration
-                Refresh(apiKey);
+                Refresh(serialKey);
             }
             catch (Exception ex)
             {
@@ -21,9 +22,9 @@ namespace EdiFabric.Api.Azure
                 //  Try one last time
                 try
                 {
-                    var token = GetFromApi(apiKey);
+                    var token = GetFromApi(serialKey);
                     WriteTokenToCache(token).Wait();
-                    SerialKey.SetToken(token);
+                    EdiFabricX12.SetToken(token);
                 }
                 catch (Exception ex2)
                 {
@@ -34,37 +35,34 @@ namespace EdiFabric.Api.Azure
             }
         }
 
-        public static async Task LoadModels(IModelService modelService)
-        {
-            foreach (var blob in await BlobHelper.ListFromCache(Configuration.ContainerName))
-            {
-                if (blob.StartsWith("EdiNation") && blob.EndsWith(".dll"))
-                {
-                    var model = await BlobHelper.ReadFromCache(Configuration.ContainerName, blob);
-                    await modelService.Load(Configuration.ApiKey, blob, model);
-                }
-            }
-        }
-
-        private static void Refresh(string apiKey)
+        private static void Refresh(string serialKey)
         {
             try
             {
                 //  Refresh the token two days before it expires
-                if (SerialKey.DaysToExpiration < 3)
-                    WriteTokenToCache(GetFromApi(apiKey)).Wait();
+                if (DaysToExpiration() < 3)
+                    WriteTokenToCache(GetFromApi(serialKey)).Wait();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 //  If can't get a token a day before the current expires - throw an exception
                 //  Otherwise keep trying
-                if (SerialKey.DaysToExpiration <= 1)
+                if (DaysToExpiration() <= 1)
                     throw;
             }
         }
 
-        private static string GetFromApi(string apiKey)
+        private static int DaysToExpiration()
+        {
+            var expiration = EdiFabricX12.GetTokenExpiration();
+            if (expiration is null)
+                return 0;
+
+            return Math.Max(0, (int)Math.Ceiling((expiration.Value - DateTime.UtcNow).TotalDays));
+        }
+
+        private static string GetFromApi(string serialKey)
         {
             int retries = 3;
             int index = 0;
@@ -74,7 +72,7 @@ namespace EdiFabric.Api.Azure
             {
                 try
                 {
-                    return SerialKey.GetToken(apiKey);
+                    return EdiFabricX12.GetToken(serialKey);
                 }
                 catch (Exception ex)
                 {

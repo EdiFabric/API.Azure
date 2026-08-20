@@ -5,3 +5,9 @@
 /.vs
 /EdiFabric.Api.Azure.Functions/Properties
 /EdiFabric.Api.Azure/Properties
+/EdiFabric.Api.Azure/edifabric-x12-tools.dll
+/EdiFabric.Api.Azure/edifabric-x12-tools.so
+/EdiFabric.Api.Azure/edifabric-x12-tools.dylib
+/edifabric-x12-tools.dll
+/edifabric-x12-tools.so
+/edifabric-x12-tools.dylib

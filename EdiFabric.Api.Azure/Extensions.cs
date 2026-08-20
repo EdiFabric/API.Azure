@@ -1,272 +1,116 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.Functions.Worker.Http;
-using EdiFabric.Api;
+using EdiFabric.Api.Azure.Models;
 
 internal static class Extensions
 {
-    public static ReadParams GetReadParams(this HttpRequestData req)
-    {        
-        var result = new ReadParams();
+    public static ReadParameters GetReadParams(this HttpRequestData req)
+    {
+        var result = new ReadParameters();
+        var query = req.ParseQuery();
+        if (query is null)
+            return result;
 
-        if (req.Url != null && !string.IsNullOrEmpty(req.Url.Query))
-        {
-            var queryDictionary = QueryHelpers.ParseQuery(req.Url.Query);
-
-            var coe = queryDictionary.GetValueOrDefault("continueOnError").ToString();
-            if (!string.IsNullOrEmpty(coe) && bool.TryParse(coe, out bool continueOnError))
-            {
-                result.ContinueOnError = continueOnError;
-            }
-
-            var charSet = queryDictionary.GetValueOrDefault("charSet").ToString();
-            if (!string.IsNullOrEmpty(charSet))
-            {
-                result.CharSet = charSet;
-            }
-
-            var es3 = queryDictionary.GetValueOrDefault("eancomS3").ToString();
-            if (!string.IsNullOrEmpty(es3) && bool.TryParse(es3, out bool eancomS3))
-            {
-                result.EancomS3IsDefault = eancomS3;
-            }
-
-            var inv = queryDictionary.GetValueOrDefault("ignoreNullValues").ToString();
-            if (!string.IsNullOrEmpty(inv) && bool.TryParse(inv, out bool ignoreNullValues))
-            {
-                result.IgnoreNullValues = ignoreNullValues;
-            }
-
-            var model = queryDictionary.GetValueOrDefault("model").ToString();
-            if (!string.IsNullOrEmpty(model))
-            {
-                result.Model = model;
-            }
-        }
+        result.CharSet = query.GetString("charSet");
 
         return result;
     }
 
-    public static WriteParams GetWriteParams(this HttpRequestData req)
+    public static WriteParameters GetWriteParams(this HttpRequestData req)
     {
-        var result = new WriteParams();
+        var result = new WriteParameters();
+        var query = req.ParseQuery();
+        if (query is null)
+            return result;
 
-        if (req.Url != null && !string.IsNullOrEmpty(req.Url.Query))
-        {
-            var queryDictionary = QueryHelpers.ParseQuery(req.Url.Query);
-
-            var pw = queryDictionary.GetValueOrDefault("preserveWhitespace").ToString();
-            if (!string.IsNullOrEmpty(pw) && bool.TryParse(pw, out bool preserveWhitespace))
-            {
-                result.PreserveWhitespace = preserveWhitespace;
-            }
-
-            result.ContentType = "application/octet-stream; charset=utf-8";
-            var charSet = queryDictionary.GetValueOrDefault("charSet").ToString();
-            if (!string.IsNullOrEmpty(charSet))
-            {
-                result.CharSet = charSet;
-                result.ContentType = $"application/octet-stream; charset={charSet}";
-            }
-
-            var postFix = queryDictionary.GetValueOrDefault("postfix").ToString();
-            if (!string.IsNullOrEmpty(postFix))
-            {
-                result.Postfix = postFix;
-            }
-
-            var es3 = queryDictionary.GetValueOrDefault("eancomS3").ToString();
-            if (!string.IsNullOrEmpty(es3) && bool.TryParse(es3, out bool eancomS3))
-            {
-                result.EancomS3IsDefault = eancomS3;
-            }
-
-            var ng = queryDictionary.GetValueOrDefault("noG1").ToString();
-            if (!string.IsNullOrEmpty(ng) && bool.TryParse(ng, out bool noG1))
-            {
-                result.NoG1 = noG1;
-            }
-
-            var trailerMessage = queryDictionary.GetValueOrDefault("trailerMessage").ToString();
-            if (!string.IsNullOrEmpty(trailerMessage))
-            {
-                result.NcpdpTrailerMessage = trailerMessage;
-            }
-        }
+        result.ContentType = query.GetString("contentType");
+        result.CharSet = query.GetString("charSet");
+        result.Postfix = query.GetString("postfix");
 
         return result;
     }
 
-    public static ValidateParams GetValidateParams(this HttpRequestData req)
+    public static ValidateParameters GetValidateParams(this HttpRequestData req)
     {
-        var result = new ValidateParams();
+        var result = new ValidateParameters();
+        var query = req.ParseQuery();
+        if (query is null)
+            return result;
 
-        if (req.Url != null && !string.IsNullOrEmpty(req.Url.Query))
-        {
-            var queryDictionary = QueryHelpers.ParseQuery(req.Url.Query);
+        BindValidate(result, query);
+        return result;
+    }
 
-            var st = queryDictionary.GetValueOrDefault("skipTrailer").ToString();
-            if (!string.IsNullOrEmpty(st) && bool.TryParse(st, out bool skipTrailer))
-            {
-                result.SkipTrailerValidation = skipTrailer;
-            }
+    public static AckParameters GetAckParams(this HttpRequestData req)
+    {
+        var result = new AckParameters();
+        var query = req.ParseQuery();
+        if (query is null)
+            return result;
 
-            var decimalPoint = queryDictionary.GetValueOrDefault("decimalPoint").ToString();
-            if (!string.IsNullOrEmpty(decimalPoint))
-            {
-                result.DecimalPoint = decimalPoint == "." ? '.' : ',';
-            }
+        BindValidate(result, query);
 
-            var syntaxSet = queryDictionary.GetValueOrDefault("syntaxSet").ToString();
-            if (!string.IsNullOrEmpty(syntaxSet))
-            {
-                result.SyntaxSet = syntaxSet;
-            }
-
-            var so = queryDictionary.GetValueOrDefault("structureOnly").ToString();
-            if (!string.IsNullOrEmpty(so) && bool.TryParse(so, out bool structureOnly))
-            {
-                result.StructureOnly = structureOnly;
-            }
-
-            var es3 = queryDictionary.GetValueOrDefault("eancomS3").ToString();
-            if (!string.IsNullOrEmpty(es3) && bool.TryParse(es3, out bool eancomS3))
-            {
-                result.EancomS3IsDefault = eancomS3;
-            }
-
-            var bs = queryDictionary.GetValueOrDefault("basicSyntax").ToString();
-            if (!string.IsNullOrEmpty(bs) && bool.TryParse(bs, out bool basicSyntax))
-            {
-                result.BasicSyntax = basicSyntax;
-            }
-        }
+        if (query.TryGetBool("suppressTa1", out var suppressTa1))
+            result.SuppressTa1 = suppressTa1;
+        if (query.TryGetBool("ak901p", out var ak901p))
+            result.Ak901p = ak901p;
+        if (query.TryGetBool("genForValid", out var genForValid))
+            result.GenForValid = genForValid;
+        if (query.TryGetBool("gen997", out var gen997))
+            result.Gen997 = gen997;
 
         return result;
     }
 
-    public static AckParams GetAckParams(this HttpRequestData req)
+    public static string? GetContentType(this HttpRequestData req)
     {
-        var result = new AckParams();
+        if (req.Headers.TryGetValues("Content-Type", out var values))
+            return values.FirstOrDefault();
 
-        if (req.Url != null && !string.IsNullOrEmpty(req.Url.Query))
-        {
-            var queryDictionary = QueryHelpers.ParseQuery(req.Url.Query);
-
-            var syntaxSet = queryDictionary.GetValueOrDefault("syntaxSet").ToString();
-            if (!string.IsNullOrEmpty(syntaxSet))
-            {
-                result.SyntaxSet = syntaxSet;
-            }
-
-            var dd = queryDictionary.GetValueOrDefault("detectDuplicates").ToString();
-            if (!string.IsNullOrEmpty(dd) && bool.TryParse(dd, out bool detectDuplicates))
-            {
-                result.DetectDuplicates = detectDuplicates;
-            }
-
-            var avm = queryDictionary.GetValueOrDefault("ackForValidTrans").ToString();
-            if (!string.IsNullOrEmpty(avm) && bool.TryParse(avm, out bool ackForValidTrans))
-            {
-                result.GenerateForValidMessages = ackForValidTrans;
-            }
-
-            var mcn = queryDictionary.GetValueOrDefault("tranRefNumber").ToString();
-            if (!string.IsNullOrEmpty(mcn) && int.TryParse(mcn, out int tranRefNumber))
-            {
-                result.MessageControlNumber = tranRefNumber;
-            }
-
-            var technicalAck = queryDictionary.GetValueOrDefault("technicalAck").ToString();
-            if (!string.IsNullOrEmpty(technicalAck))
-            {
-                result.TechnicalAck = technicalAck;
-            }
-
-            var es3 = queryDictionary.GetValueOrDefault("eancomS3").ToString();
-            if (!string.IsNullOrEmpty(es3) && bool.TryParse(es3, out bool eancomS3))
-            {
-                result.EancomS3IsDefault = eancomS3;
-            }
-
-            var ba = queryDictionary.GetValueOrDefault("batchAcks").ToString();
-            if (!string.IsNullOrEmpty(ba) && bool.TryParse(ba, out bool batchAcks))
-            {
-                result.BatchAcks = batchAcks;
-            }
-
-            var irn = queryDictionary.GetValueOrDefault("interchangeRefNumber").ToString();
-            if (!string.IsNullOrEmpty(irn) && int.TryParse(irn, out int interchangeRefNumber))
-            {
-                result.InterchangeControlNumber = interchangeRefNumber;
-            }
-
-            var ack = queryDictionary.GetValueOrDefault("ack").ToString();
-            if (!string.IsNullOrEmpty(ack))
-            {
-                result.AckVersion = ack;
-            }
-
-            var ak9isP = queryDictionary.GetValueOrDefault("ak901isP").ToString();
-            if (!string.IsNullOrEmpty(ak9isP) && bool.TryParse(ak9isP, out bool ak901isP))
-            {
-                result.Ak901ShouldBeP = ak901isP;
-            }
-        }
-
-        return result;
+        return null;
     }
 
-    public static AnalyzeParams GetAnalyzeParams(this HttpRequestData req)
+    private static void BindValidate(ValidateParameters result, Dictionary<string, Microsoft.Extensions.Primitives.StringValues> query)
     {
-        var result = new AnalyzeParams();
+        result.Regex = query.GetString("regex");
+        result.DateFormat = query.GetString("dateFormat");
+        result.TimeFormat = query.GetString("timeFormat");
+        if (query.TryGetBool("skipSeqCount", out var skipSeqCount))
+            result.SkipSeqCount = skipSeqCount;
+        if (query.TryGetBool("skipHlSeq", out var skipHlSeq))
+            result.SkipHlSeq = skipHlSeq;
+        if (query.TryGetInt("snipLevel", out var snipLevel))
+            result.SnipLevel = snipLevel;
+        if (query.TryGetInt("maxErrors", out var maxErrors))
+            result.MaxErrors = maxErrors;
+    }
 
-        if (req.Url != null && !string.IsNullOrEmpty(req.Url.Query))
-        {
-            var queryDictionary = QueryHelpers.ParseQuery(req.Url.Query);
+    private static Dictionary<string, Microsoft.Extensions.Primitives.StringValues>? ParseQuery(this HttpRequestData req)
+    {
+        if (req.Url == null || string.IsNullOrEmpty(req.Url.Query))
+            return null;
 
-            var model = queryDictionary.GetValueOrDefault("model").ToString();
-            if (!string.IsNullOrEmpty(model))
-            {
-                result.Model = model;
-            }
+        return QueryHelpers.ParseQuery(req.Url.Query)
+            .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.OrdinalIgnoreCase);
+    }
 
-            var syntaxSet = queryDictionary.GetValueOrDefault("syntaxSet").ToString();
-            if (!string.IsNullOrEmpty(syntaxSet))
-            {
-                result.SyntaxSet = syntaxSet;
-            }
+    private static string? GetString(this Dictionary<string, Microsoft.Extensions.Primitives.StringValues> query, string key)
+    {
+        var value = query.GetValueOrDefault(key).ToString();
+        return string.IsNullOrEmpty(value) ? null : value;
+    }
 
-            var es3 = queryDictionary.GetValueOrDefault("eancomS3").ToString();
-            if (!string.IsNullOrEmpty(es3) && bool.TryParse(es3, out bool eancomS3))
-            {
-                result.EancomS3IsDefault = eancomS3;
-            }
+    private static bool TryGetBool(this Dictionary<string, Microsoft.Extensions.Primitives.StringValues> query, string key, out bool value)
+    {
+        value = default;
+        var raw = query.GetString(key);
+        return !string.IsNullOrEmpty(raw) && bool.TryParse(raw, out value);
+    }
 
-            var bs = queryDictionary.GetValueOrDefault("basicSyntax").ToString();
-            if (!string.IsNullOrEmpty(bs) && bool.TryParse(bs, out bool basicSyntax))
-            {
-                result.BasicSyntax = basicSyntax;
-            }
-
-            var ack = queryDictionary.GetValueOrDefault("ack").ToString();
-            if (!string.IsNullOrEmpty(ack))
-            {
-                result.AckVersion = ack;
-            }
-
-            var charSet = queryDictionary.GetValueOrDefault("charSet").ToString();
-            if (!string.IsNullOrEmpty(charSet))
-            {
-                result.CharSet = charSet;
-            }
-
-            var ss = queryDictionary.GetValueOrDefault("skipSeq").ToString();
-            if (!string.IsNullOrEmpty(ss) && bool.TryParse(ss, out bool skipSeq))
-            {
-                result.SkipSeqCountValidation = skipSeq;
-            }
-        }
-
-        return result;
+    private static bool TryGetInt(this Dictionary<string, Microsoft.Extensions.Primitives.StringValues> query, string key, out int value)
+    {
+        value = default;
+        var raw = query.GetString(key);
+        return !string.IsNullOrEmpty(raw) && int.TryParse(raw, out value);
     }
 }

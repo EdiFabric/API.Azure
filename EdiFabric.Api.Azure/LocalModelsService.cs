@@ -1,32 +1,52 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+using EdiFabric.Native.X12;
 
 namespace EdiFabric.Api.Azure
 {
-    public class LocalModelsService : IHostedService
+    public interface ILocalModelsService
     {
-        private readonly IModelService _modelService;
+        void Load(string serial, string mapPath);
+        void LoadOnline(string serial);
+    }
 
-        public LocalModelsService(IModelService modelService)
+    public class LocalModelsService : ILocalModelsService
+    {
+        private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = false };
+
+        public void LoadOnline(string serial)
         {
-            _modelService = modelService;
+            var map = new JsonObject
+            {
+                ["default"] = serial,
+                ["maps"] = new JsonObject(),
+            };
+
+            EdiFabricX12.SetMap(map.ToJsonString(JsonOptions));
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public void Load(string serial, string mapPath)
         {
-            //  Load local EDI models
-            //  When models are local they won't be pulled from EdiNation API
-            try
+            var mapLocation = Path.GetDirectoryName(Path.GetFullPath(mapPath))
+                ?? throw new InvalidOperationException($"Can't resolve the directory for map file '{mapPath}'.");
+
+            var localMap = JsonNode.Parse(File.ReadAllText(mapPath))?.AsObject()
+                ?? throw new InvalidDataException($"Map file '{mapPath}' is not a JSON object.");
+
+            var maps = localMap["maps"]?.AsObject();
+            if (maps is not null)
             {
-                await BlobCache.LoadModels(_modelService);
+                foreach (var entry in maps)
+                {
+                    if (entry.Value is JsonObject mapEntry)
+                        mapEntry["location"] = mapLocation;
+                }
             }
-            catch(Exception ex) 
-            {
-                Console.WriteLine($"Can't load models from cache. {ex.Message}");
-            }
-        }
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
+
+            if (string.IsNullOrWhiteSpace(localMap["default"]?.GetValue<string>()))
+                localMap["default"] = serial;
+
+            EdiFabricX12.SetMap(localMap.ToJsonString(JsonOptions));
         }
     }
 }

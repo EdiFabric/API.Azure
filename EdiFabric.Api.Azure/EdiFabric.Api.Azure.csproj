@@ -1,19 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>    
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Keep extra native files in the Functions publish output. -->
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.23.0" />
-    <PackageReference Include="EdiFabric.Api" Version="2.2.12" />
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.11" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.3.0" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.0" OutputItemType="Analyzer" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.1.0" OutputItemType="Analyzer" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.52.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
@@ -23,6 +24,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
+  </ItemGroup>
+  <!-- Native library: copy next to the worker on build and publish. Linux Function Apps need the .so. -->
+  <ItemGroup>
+    <Content Include="edifabric-x12-tools.dll" Condition="Exists('edifabric-x12-tools.dll')" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="edifabric-x12-tools.so" Condition="Exists('edifabric-x12-tools.so')" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="edifabric-x12-tools.dylib" Condition="Exists('edifabric-x12-tools.dylib')" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\edifabric-x12-tools.dll" Condition="Exists('..\edifabric-x12-tools.dll')" Link="edifabric-x12-tools.dll" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\edifabric-x12-tools.so" Condition="Exists('..\edifabric-x12-tools.so')" Link="edifabric-x12-tools.so" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\edifabric-x12-tools.dylib" Condition="Exists('..\edifabric-x12-tools.dylib')" Link="edifabric-x12-tools.dylib" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="map\map.json" Condition="Exists('map\map.json')" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
